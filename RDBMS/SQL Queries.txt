@@ -1,0 +1,13 @@
+SELECT copies.noOfCopies FROM tbl_book book, tbl_book_copies copies, tbl_library_branch branch WHERE book.bookId=copies.bookId AND copies.branchId = branch.branchId AND title='The Lost Tribe' AND branchName='Sharpstown';
+
+SELECT branchName, noOfCopies FROM ((tbl_book NATURAL JOIN tbl_book_copies) NATURAL JOIN tbl_library_branch) WHERE title='The Lost Tribe';
+
+SELECT name FROM tbl_borrower WHERE cardNo NOT IN (SELECT CardNo FROM tbl_book_loans);
+
+SELECT book.title, R.name, R.address FROM tbl_book book, tbl_borrower R, tbl_book_loans loans, tbl_library_branch branch WHERE branch.branchName='Sharpstown' AND branch.branchId=loans.branchId AND loans.dueDate='today' AND loans.cardNo=R.cardNo AND loans.bookId=book.bookId
+
+SELECT branch.branchName, COUNT(*) FROM tbl_library_branch branch, tbl_book_loans loans WHERE loans.branchId = branch.branchId GROUP BY branch.branchName;
+
+SELECT borrower.name, borrower.address, COUNT(*) FROM tbl_borrower borrower, tbl_book_loans L WHERE borrower.cardNo = L.cardNo GROUP BY borrower.cardNo, borrower.name, borrower.address HAVING COUNT(*) > 5;
+
+SELECT title, noOfCopies FROM (((tbl_author NATURAL JOIN tbl_book) NATURAL JOIN tbl_book_copies) NATURAL JOIN tbl_library_branch)WHERE author_Name='Stephen King' AND branchName='Central';
